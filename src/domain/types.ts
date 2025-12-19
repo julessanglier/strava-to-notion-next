@@ -27,9 +27,9 @@ export interface StravaActivity {
   distance: number;
   moving_time: number;
   elapsed_time: number;
-  total_elevation_gain: number;
+  total_elevation_gain?: number;
   start_date: string;
-  start_date_local: string;
+  start_date_local?: string;
   timezone: string;
   average_speed?: number;
   max_speed?: number;

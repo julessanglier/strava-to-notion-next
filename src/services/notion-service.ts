@@ -30,13 +30,21 @@ export class NotionService {
       pace = parseFloat((durationMinutes / distanceKm).toFixed(2));
     }
 
+    // Sanitize and validate activity name (max 2000 chars for Notion title)
+    let activityName = activity.name || "Untitled Activity";
+    if (activityName.length > 2000) {
+      activityName = activityName.substring(0, 1997) + "...";
+    }
+
     return {
-      name: activity.name || "Untitled Activity",
+      name: activityName,
       activityType: activity.type,
       distanceKm,
       durationMinutes,
       pace,
-      elevationGain: Math.round(activity.total_elevation_gain),
+      elevationGain: activity.total_elevation_gain
+        ? Math.round(activity.total_elevation_gain)
+        : 0,
       startDate: activity.start_date_local || activity.start_date,
       averageSpeedKmh: activity.average_speed
         ? parseFloat((activity.average_speed * 3.6).toFixed(2))

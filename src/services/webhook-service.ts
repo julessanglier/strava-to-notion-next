@@ -17,6 +17,7 @@ export class WebhookService {
     skipped: boolean;
     activity?: string;
     notionPageId?: string;
+    notionError?: string;
   }> {
     console.log("=== Strava Webhook Event ===");
     console.log("Body:", JSON.stringify(event, null, 2));
@@ -48,12 +49,16 @@ export class WebhookService {
           notionPageId,
         };
       } catch (error) {
-        console.error("❌ Failed to save to Notion:", error);
-        // Still return success for Strava webhook, but log the error
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        console.error("❌ Failed to save to Notion:", errorMessage);
+
+        // Return error in response for monitoring
         return {
           processed: true,
           skipped: false,
           activity: activity.name,
+          notionError: errorMessage,
         };
       }
     } else if (object_type === "activity" && aspect_type === "update") {
