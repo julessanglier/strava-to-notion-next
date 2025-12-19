@@ -49,3 +49,22 @@ export interface WebhookVerification {
   "hub.challenge": string;
   "hub.mode"?: string;
 }
+
+// Notion Domain Types
+
+export interface NotionActivityData {
+  name: string;
+  activityType: string;
+  distance: number; // in meters
+  duration: number; // moving time in seconds
+  pace?: number; // min/km or min/mile
+  elevationGain: number; // in meters
+  startDate: string; // ISO 8601 date
+  averageSpeed?: number; // m/s
+  maxSpeed?: number; // m/s
+  averageHeartRate?: number; // bpm
+  maxHeartRate?: number; // bpm
+  calories?: number;
+  stravaLink: string; // URL to activity
+  activityId: number; // Strava activity ID
+}
