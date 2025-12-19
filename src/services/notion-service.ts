@@ -2,6 +2,18 @@
 import { NotionClient } from "../infrastructure/notion-client.js";
 import { StravaActivity, NotionActivityData } from "../domain/types.js";
 
+// Constants
+const PACE_RELEVANT_ACTIVITY_TYPES = [
+  "Run",
+  "Walk",
+  "Hike",
+  "TrailRun",
+  "VirtualRun",
+] as const;
+const MAX_NOTION_TITLE_LENGTH = 2000;
+const TRUNCATION_SUFFIX = "...";
+const TRUNCATION_LENGTH = MAX_NOTION_TITLE_LENGTH - TRUNCATION_SUFFIX.length;
+
 export class NotionService {
   constructor(private notionClient: NotionClient) {}
 
@@ -25,15 +37,18 @@ export class NotionService {
 
     // Calculate pace (min/km) only for running and walking activities
     let pace: number | undefined;
-    const paceRelevantTypes = ["Run", "Walk", "Hike", "TrailRun", "VirtualRun"];
-    if (distanceKm > 0 && paceRelevantTypes.includes(activity.type)) {
+    if (
+      distanceKm > 0 &&
+      PACE_RELEVANT_ACTIVITY_TYPES.includes(activity.type as any)
+    ) {
       pace = parseFloat((durationMinutes / distanceKm).toFixed(2));
     }
 
-    // Sanitize and validate activity name (max 2000 chars for Notion title)
+    // Sanitize and validate activity name
     let activityName = activity.name || "Untitled Activity";
-    if (activityName.length > 2000) {
-      activityName = activityName.substring(0, 1997) + "...";
+    if (activityName.length > MAX_NOTION_TITLE_LENGTH) {
+      activityName =
+        activityName.substring(0, TRUNCATION_LENGTH) + TRUNCATION_SUFFIX;
     }
 
     return {
@@ -42,6 +57,7 @@ export class NotionService {
       distanceKm,
       durationMinutes,
       pace,
+      // Use 0 for missing elevation gain to satisfy Notion's number field requirement
       elevationGain: activity.total_elevation_gain
         ? Math.round(activity.total_elevation_gain)
         : 0,

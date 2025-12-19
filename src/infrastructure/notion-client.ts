@@ -86,7 +86,6 @@ export class NotionClient {
         },
       });
 
-      console.log(`✓ Activity saved to Notion: ${response.id}`);
       return response.id;
     } catch (error) {
       console.error("❌ Failed to save activity to Notion:", error);

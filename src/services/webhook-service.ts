@@ -49,11 +49,12 @@ export class WebhookService {
           notionPageId,
         };
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Unknown error";
-        console.error("❌ Failed to save to Notion:", errorMessage);
+        // Log full error details for debugging
+        console.error("❌ Failed to save to Notion:", error);
 
-        // Return error in response for monitoring
+        // Return sanitized error message in response
+        const errorMessage = "Failed to save activity to Notion database";
+
         return {
           processed: true,
           skipped: false,
