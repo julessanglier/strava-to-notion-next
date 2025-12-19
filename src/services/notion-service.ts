@@ -67,7 +67,7 @@ export class NotionService {
       distanceKm,
       durationMinutes,
       pace,
-      // Use 0 for missing elevation gain to satisfy Notion's number field requirement
+      // Default to 0 if elevation gain is unavailable (Notion requires a number value)
       elevationGain: activity.total_elevation_gain
         ? Math.round(activity.total_elevation_gain)
         : 0,

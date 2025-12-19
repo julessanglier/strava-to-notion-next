@@ -12,6 +12,13 @@ export class NotionClient {
   }
 
   /**
+   * Helper to conditionally add properties to Notion page
+   */
+  private addNumberProperty(key: string, value: number | undefined) {
+    return value !== undefined ? { [key]: { number: value } } : {};
+  }
+
+  /**
    * Create a new activity entry in Notion database
    */
   async createActivity(activity: NotionActivityData): Promise<string> {
@@ -38,11 +45,7 @@ export class NotionClient {
         Duration: {
           number: activity.durationMinutes,
         },
-        ...(activity.pace && {
-          Pace: {
-            number: activity.pace,
-          },
-        }),
+        ...this.addNumberProperty("Pace", activity.pace),
         "Elevation Gain": {
           number: activity.elevationGain,
         },
@@ -51,31 +54,14 @@ export class NotionClient {
             start: activity.startDate,
           },
         },
-        ...(activity.averageSpeedKmh && {
-          "Average Speed": {
-            number: activity.averageSpeedKmh,
-          },
-        }),
-        ...(activity.maxSpeedKmh && {
-          "Max Speed": {
-            number: activity.maxSpeedKmh,
-          },
-        }),
-        ...(activity.averageHeartRate && {
-          "Average Heart Rate": {
-            number: activity.averageHeartRate,
-          },
-        }),
-        ...(activity.maxHeartRate && {
-          "Max Heart Rate": {
-            number: activity.maxHeartRate,
-          },
-        }),
-        ...(activity.calories && {
-          Calories: {
-            number: activity.calories,
-          },
-        }),
+        ...this.addNumberProperty("Average Speed", activity.averageSpeedKmh),
+        ...this.addNumberProperty("Max Speed", activity.maxSpeedKmh),
+        ...this.addNumberProperty(
+          "Average Heart Rate",
+          activity.averageHeartRate
+        ),
+        ...this.addNumberProperty("Max Heart Rate", activity.maxHeartRate),
+        ...this.addNumberProperty("Calories", activity.calories),
         "Strava Link": {
           url: activity.stravaLink,
         },

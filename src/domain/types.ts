@@ -63,7 +63,7 @@ export interface NotionActivityData {
   distanceKm: number; // in kilometers (converted)
   durationMinutes: number; // in minutes (converted)
   pace?: number; // min/km or min/mile
-  elevationGain: number; // in meters
+  elevationGain: number; // in meters (defaults to 0 if unavailable)
   startDate: string; // ISO 8601 date
   averageSpeedKmh?: number; // km/h (converted)
   maxSpeedKmh?: number; // km/h (converted)
