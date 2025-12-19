@@ -14,6 +14,8 @@ const MAX_NOTION_TITLE_LENGTH = 2000;
 const TRUNCATION_SUFFIX = "...";
 const TRUNCATION_LENGTH = MAX_NOTION_TITLE_LENGTH - TRUNCATION_SUFFIX.length;
 
+type PaceRelevantActivityType = (typeof PACE_RELEVANT_ACTIVITY_TYPES)[number];
+
 export class NotionService {
   constructor(private notionClient: NotionClient) {}
 
@@ -23,6 +25,17 @@ export class NotionService {
   async saveActivity(activity: StravaActivity): Promise<string> {
     const notionData = this.convertStravaToNotion(activity);
     return await this.notionClient.createActivity(notionData);
+  }
+
+  /**
+   * Check if activity type is pace-relevant
+   */
+  private isPaceRelevantActivity(
+    activityType: string
+  ): activityType is PaceRelevantActivityType {
+    return (PACE_RELEVANT_ACTIVITY_TYPES as readonly string[]).includes(
+      activityType
+    );
   }
 
   /**
@@ -37,10 +50,7 @@ export class NotionService {
 
     // Calculate pace (min/km) only for running and walking activities
     let pace: number | undefined;
-    if (
-      distanceKm > 0 &&
-      PACE_RELEVANT_ACTIVITY_TYPES.includes(activity.type as any)
-    ) {
+    if (distanceKm > 0 && this.isPaceRelevantActivity(activity.type)) {
       pace = parseFloat((durationMinutes / distanceKm).toFixed(2));
     }
 
