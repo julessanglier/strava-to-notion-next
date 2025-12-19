@@ -31,6 +31,11 @@ export interface StravaActivity {
   start_date: string;
   start_date_local: string;
   timezone: string;
+  average_speed?: number;
+  max_speed?: number;
+  average_heartrate?: number;
+  max_heartrate?: number;
+  calories?: number;
   [key: string]: any;
 }
 
@@ -55,13 +60,13 @@ export interface WebhookVerification {
 export interface NotionActivityData {
   name: string;
   activityType: string;
-  distance: number; // in meters
-  duration: number; // moving time in seconds
+  distanceKm: number; // in kilometers (converted)
+  durationMinutes: number; // in minutes (converted)
   pace?: number; // min/km or min/mile
   elevationGain: number; // in meters
   startDate: string; // ISO 8601 date
-  averageSpeed?: number; // m/s
-  maxSpeed?: number; // m/s
+  averageSpeedKmh?: number; // km/h (converted)
+  maxSpeedKmh?: number; // km/h (converted)
   averageHeartRate?: number; // bpm
   maxHeartRate?: number; // bpm
   calories?: number;

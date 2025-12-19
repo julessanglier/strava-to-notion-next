@@ -34,47 +34,47 @@ export class NotionClient {
             },
           },
           Distance: {
-            number: Math.round(activity.distance) / 1000, // Convert to km
+            number: activity.distanceKm,
           },
           Duration: {
-            number: Math.round(activity.duration / 60), // Convert to minutes
+            number: activity.durationMinutes,
           },
           ...(activity.pace && {
             Pace: {
-              number: parseFloat(activity.pace.toFixed(2)),
+              number: activity.pace,
             },
           }),
           "Elevation Gain": {
-            number: Math.round(activity.elevationGain),
+            number: activity.elevationGain,
           },
           "Start Date": {
             date: {
               start: activity.startDate,
             },
           },
-          ...(activity.averageSpeed && {
+          ...(activity.averageSpeedKmh && {
             "Average Speed": {
-              number: parseFloat((activity.averageSpeed * 3.6).toFixed(2)), // Convert m/s to km/h
+              number: activity.averageSpeedKmh,
             },
           }),
-          ...(activity.maxSpeed && {
+          ...(activity.maxSpeedKmh && {
             "Max Speed": {
-              number: parseFloat((activity.maxSpeed * 3.6).toFixed(2)), // Convert m/s to km/h
+              number: activity.maxSpeedKmh,
             },
           }),
           ...(activity.averageHeartRate && {
             "Average Heart Rate": {
-              number: Math.round(activity.averageHeartRate),
+              number: activity.averageHeartRate,
             },
           }),
           ...(activity.maxHeartRate && {
             "Max Heart Rate": {
-              number: Math.round(activity.maxHeartRate),
+              number: activity.maxHeartRate,
             },
           }),
           ...(activity.calories && {
             Calories: {
-              number: Math.round(activity.calories),
+              number: activity.calories,
             },
           }),
           "Strava Link": {
