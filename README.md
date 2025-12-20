@@ -27,6 +27,7 @@ src/
 - Bun runtime
 - Strava API credentials
 - Supabase account and database
+- Notion account and integration (see [Notion Setup Guide](./NOTION_SETUP.md))
 
 ## Development
 
@@ -66,6 +67,8 @@ Required environment variables:
 - `STRAVA_CLIENT_ID` - Strava OAuth client ID
 - `STRAVA_CLIENT_SECRET` - Strava OAuth client secret
 - `REDIRECT_URI` - OAuth callback URL (e.g., https://yourdomain.com/auth/callback)
+- `NOTION_API_KEY` - Notion integration API key (internal integration token)
+- `NOTION_DATABASE_ID` - Notion database ID where activities will be stored
 
 ## Features
 
@@ -75,6 +78,18 @@ Required environment variables:
 - ✅ Retry logic for activity fetching
 - ✅ Type-safe TypeScript throughout
 - ✅ Clean, modular architecture
+- ✅ Notion API integration for activity tracking
+
+## Notion Database Setup
+
+📖 **See [NOTION_SETUP.md](./NOTION_SETUP.md) for detailed step-by-step instructions.**
+
+Quick summary:
+1. Create a Notion integration at [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Create a database with 14 properties (Name, Activity Type, Distance, Duration, etc.)
+3. Share the database with your integration
+4. Get the database ID from the URL
+5. Set `NOTION_API_KEY` and `NOTION_DATABASE_ID` environment variables
 
 ## API Endpoints
 

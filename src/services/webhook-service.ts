@@ -1,9 +1,13 @@
 // Webhook Service
 import { ActivityService } from "./activity-service.js";
+import { NotionService } from "./notion-service.js";
 import { WebhookEventBody } from "../domain/api-types.js";
 
 export class WebhookService {
-  constructor(private activityService: ActivityService) {}
+  constructor(
+    private activityService: ActivityService,
+    private notionService: NotionService
+  ) {}
 
   /**
    * Process webhook event
@@ -12,6 +16,8 @@ export class WebhookService {
     processed: boolean;
     skipped: boolean;
     activity?: string;
+    notionPageId?: string;
+    notionError?: string;
   }> {
     console.log("=== Strava Webhook Event ===");
     console.log("Body:", JSON.stringify(event, null, 2));
@@ -30,14 +36,32 @@ export class WebhookService {
 
       console.log("Activity details:", JSON.stringify(activity, null, 2));
 
-      // TODO: Send to Notion API here
-      // You'll need to add Notion integration next
+      // Save to Notion database
+      try {
+        console.log("Saving activity to Notion...");
+        const notionPageId = await this.notionService.saveActivity(activity);
+        console.log(`✓ Activity saved to Notion: ${notionPageId}`);
 
-      return {
-        processed: true,
-        skipped: false,
-        activity: activity.name,
-      };
+        return {
+          processed: true,
+          skipped: false,
+          activity: activity.name,
+          notionPageId,
+        };
+      } catch (error) {
+        // Log full error details for debugging
+        console.error("❌ Failed to save to Notion:", error);
+
+        // Return sanitized error message in response
+        const errorMessage = "Failed to save activity to Notion database";
+
+        return {
+          processed: true,
+          skipped: false,
+          activity: activity.name,
+          notionError: errorMessage,
+        };
+      }
     } else if (object_type === "activity" && aspect_type === "update") {
       console.log(`Activity ${object_id} was updated - skipping for now`);
       return {

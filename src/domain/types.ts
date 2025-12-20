@@ -27,10 +27,15 @@ export interface StravaActivity {
   distance: number;
   moving_time: number;
   elapsed_time: number;
-  total_elevation_gain: number;
+  total_elevation_gain?: number;
   start_date: string;
-  start_date_local: string;
+  start_date_local?: string;
   timezone: string;
+  average_speed?: number;
+  max_speed?: number;
+  average_heartrate?: number;
+  max_heartrate?: number;
+  calories?: number;
   [key: string]: any;
 }
 
@@ -48,4 +53,23 @@ export interface WebhookVerification {
   "hub.verify_token": string;
   "hub.challenge": string;
   "hub.mode"?: string;
+}
+
+// Notion Domain Types
+
+export interface NotionActivityData {
+  name: string;
+  activityType: string;
+  distanceKm: number; // in kilometers (converted)
+  durationMinutes: number; // in minutes (converted)
+  pace?: number; // min/km or min/mile
+  elevationGain: number; // in meters (defaults to 0 if unavailable)
+  startDate: string; // ISO 8601 date
+  averageSpeedKmh?: number; // km/h (converted)
+  maxSpeedKmh?: number; // km/h (converted)
+  averageHeartRate?: number; // bpm
+  maxHeartRate?: number; // bpm
+  calories?: number;
+  stravaLink: string; // URL to activity
+  activityId: number; // Strava activity ID
 }

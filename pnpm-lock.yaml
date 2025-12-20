@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@notionhq/client':
+        specifier: ^5.6.0
+        version: 5.6.0
       '@supabase/supabase-js':
         specifier: ^2.87.1
         version: 2.87.1
@@ -26,6 +29,10 @@ importers:
         version: 5.8.3
 
 packages:
+
+  '@notionhq/client@5.6.0':
+    resolution: {integrity: sha512-eA3dO87vQJhFmR59utXH8r0nnulW7C7oTcxfp3bpiiTiv59luCkOkbbALCIa8TzBDdELoRD/zJEIfKcynyFR6Q==}
+    engines: {node: '>=18'}
 
   '@supabase/auth-js@2.87.1':
     resolution: {integrity: sha512-6RDeOf5TVoaXFtEstN188ykp3pXLZaU9qoAWfx8dc50FFAAqt+kcFJ96V0IvSmcpb4mDAWcpTJ7BegmVDn/WIw==}
@@ -383,6 +390,8 @@ packages:
         optional: true
 
 snapshots:
+
+  '@notionhq/client@5.6.0': {}
 
   '@supabase/auth-js@2.87.1':
     dependencies:
